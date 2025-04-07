@@ -1,9 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native'
 import React from 'react'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import Typo from '@/components/Typo'
 import { colors, spacingX, spacingY } from '@/constants/theme'
 import { verticalScale } from '@/utils/styling'
+import Button from '@/components/Button'
+import Animated, { FadeIn } from 'react-native-reanimated'
 
 const Welcome = () => {
   return (
@@ -15,7 +17,8 @@ const Welcome = () => {
                 <Typo fontWeight={"500"}>Sign in</Typo>
             </TouchableOpacity>
 
-            <Image
+            <Animated.Image
+            entering={FadeIn.duration(2000)}
              source={require("../../assets/images/welcome.png")}
              style={styles.welcomeImage}
              resizeMode="contain"
@@ -43,7 +46,11 @@ const Welcome = () => {
             </View>
 
             <View style={styles.buttonContainer}>
-            {/* button */}
+            <Button>
+                <Typo size={22} color={colors.neutral900} fontWeight={"600"}>
+                    Get Started
+                </Typo>
+            </Button>
             </View>
         </View>
       </View>
