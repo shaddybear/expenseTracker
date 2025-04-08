@@ -3,6 +3,7 @@
     "name": "expenseTracker",
     "slug": "expenseTracker",
     "version": "1.0.0",
+    "owner": "folks-of-devx",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -15,7 +16,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.folksofdevx.expenseTracker"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +38,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1cc9263e-bff9-49d3-b18c-069c87b413af"
+      }
     }
   }
 }
