@@ -21,6 +21,9 @@ const Login = () => {
             Alert.alert('Login', "Please fill all the fields");
             return;
         }
+        {/*
+            Make sure to remove the 3 console logs
+        */}
         console.log("email: ", emailRef.current)
         console.log("password: ", passwordRef.current)
         console.log("Good to go")
