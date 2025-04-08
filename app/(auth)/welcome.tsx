@@ -18,7 +18,7 @@ const Welcome = () => {
             </TouchableOpacity>
 
             <Animated.Image
-            entering={FadeIn.duration(500)}
+            entering={FadeIn.duration(1000)}
              source={require("../../assets/images/welcome.png")}
              style={styles.welcomeImage}
              resizeMode="contain"
@@ -36,7 +36,7 @@ const Welcome = () => {
                 </Typo>
             </Animated.View>
 
-            <Animated.View entering={FadeInDown.duration(1000).springify().damping(12)}>
+            <Animated.View entering={FadeInDown.duration(1000).delay(100).springify().damping(12)} style={{alignItems: "center", gap: 2}}>
                 <Typo size={17} color={colors.textLight}>
                     Finances must be arranged to set up a better
                 </Typo>
@@ -45,13 +45,13 @@ const Welcome = () => {
                 </Typo>
             </Animated.View>
 
-            <View style={styles.buttonContainer}>
+            <Animated.View entering={FadeInDown.duration(1000).delay(200).springify().damping(12)} style={styles.buttonContainer}>
             <Button>
                 <Typo size={22} color={colors.neutral900} fontWeight={"600"}>
                     Get Started
                 </Typo>
             </Button>
-            </View>
+            </Animated.View>
         </View>
       </View>
     </ScreenWrapper>
