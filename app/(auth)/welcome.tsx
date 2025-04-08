@@ -5,7 +5,7 @@ import Typo from '@/components/Typo'
 import { colors, spacingX, spacingY } from '@/constants/theme'
 import { verticalScale } from '@/utils/styling'
 import Button from '@/components/Button'
-import Animated, { FadeIn } from 'react-native-reanimated'
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated'
 
 const Welcome = () => {
   return (
@@ -18,7 +18,7 @@ const Welcome = () => {
             </TouchableOpacity>
 
             <Animated.Image
-            entering={FadeIn.duration(2000)}
+            entering={FadeIn.duration(500)}
              source={require("../../assets/images/welcome.png")}
              style={styles.welcomeImage}
              resizeMode="contain"
@@ -27,23 +27,23 @@ const Welcome = () => {
 
         {/*/ Footer */}
         <View style={styles.footer}>
-            <View style={{alignItems: "center"}}>
+            <Animated.View entering={FadeInDown.duration(1000).springify().damping(12)} style={{alignItems: "center"}}>
                 <Typo size={30} fontWeight={"800"}>
                     Always take control
                 </Typo>
                 <Typo size={30} fontWeight={"800"}>
                     of your finances
                 </Typo>
-            </View>
+            </Animated.View>
 
-            <View style={{alignItems: "center", gap: 2}}>
+            <Animated.View entering={FadeInDown.duration(1000).springify().damping(12)}>
                 <Typo size={17} color={colors.textLight}>
                     Finances must be arranged to set up a better
                 </Typo>
                 <Typo size={17} color={colors.textLight}>
                         lifestyle in future
                 </Typo>
-            </View>
+            </Animated.View>
 
             <View style={styles.buttonContainer}>
             <Button>
