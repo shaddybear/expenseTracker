@@ -15,6 +15,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -33,11 +36,13 @@ jobs:
       - name: Publish preview update with EAS
         id: eas-update
         run: |
-          # Fetch the source branch of the pull request
           BRANCH="${{ github.head_ref }}"
-          eas update --branch $BRANCH --non-interactive --auto
-          echo "https://expo.dev/preview/update?branchName=$BRANCH" > link.txt
-          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          OUTPUT=$(eas update --branch $BRANCH --non-interactive --auto --json)
+          echo "$OUTPUT" > eas_output.json
+          PROJECT_ID=$(echo "$OUTPUT" | jq -r '.projectId')
+          GROUP_ID=$(echo "$OUTPUT" | jq -r '.groups[0].id')
+          PREVIEW_URL="https://expo.dev/preview/update?projectId=$PROJECT_ID&group=$GROUP_ID"
+          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
 
       - name: Comment on PR with Preview Link
         uses: mshick/add-pr-comment@v2
@@ -45,7 +50,7 @@ jobs:
           message: |
             🚀 **EAS Update Preview is Ready!**
 
-            📲 Open the link below:
-            🔗 [`https://expo.dev/preview/update?branchName=${{ github.head_ref }}`](https://expo.dev/preview/update?branchName=${{ github.head_ref }})
+            📲 Open the link in your browser:
+            🔗 [Preview Update Link](${{ steps.eas-update.outputs.preview_url }})
 
             > ⚠️ JavaScript-only update using `eas update`. No native code rebuild.
