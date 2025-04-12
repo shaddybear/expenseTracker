@@ -19,7 +19,8 @@ A TypeScript-based React Native app using Firebase for authentication and Firest
 ## 🚀 Getting Started
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
-npm install
-npx expo start
+git clone https://github.com/Folks-of-Devx/expenseTracker.git
+cd expenseTracker
+npm i
+npm run android
+```
