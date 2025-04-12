@@ -26,7 +26,6 @@ Enhancement suggestions are tracked as GitHub issues. When you are creating an e
 
 ### Pull Requests
 
-* Fill in the required template
 * Do not include issue numbers in the PR title
 * Follow the coding style used throughout the project
 * Include appropriate test cases
