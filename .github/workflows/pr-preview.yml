@@ -5,48 +5,47 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  publish:
+  update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: Setup Expo and EAS CLI
+      - name: Setup Expo + EAS
         uses: expo/expo-github-action@v8
         with:
           expo-version: latest
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-
       - name: Install dependencies
         run: npm install
 
-      - name: Publish to Expo
+      - name: Publish preview update with EAS
+        id: eas-update
         run: |
-          CHANNEL="preview-pr-${{ github.event.pull_request.number }}"
-          expo publish --release-channel $CHANNEL --non-interactive --quiet
-
-      - name: Publish update with EAS
-        run: |
-            CHANNEL="preview-pr-${{ github.event.pull_request.number }}"
-            eas update --branch $CHANNEL --non-interactive
-            echo "https://expo.dev/updates/$CHANNEL" > link.txt
-
+          # Fetch the source branch of the pull request
+          BRANCH="${{ github.head_ref }}"
+          eas update --branch $BRANCH --non-interactive --auto
+          echo "https://expo.dev/preview/update?branchName=$BRANCH" > link.txt
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Comment on PR with Preview Link
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            🚀 **Expo Preview Build is Ready!**
+            🚀 **EAS Update Preview is Ready!**
 
             📲 Open the link below:
+            🔗 [`https://expo.dev/preview/update?branchName=${{ github.head_ref }}`](https://expo.dev/preview/update?branchName=${{ github.head_ref }})
 
-            🔗 [`exp://exp.host/@ritaban06/expensetracker?release-channel=preview-pr-${{ github.event.pull_request.number }}`](exp://exp.host/@ritaban06/expensetracker?release-channel=preview-pr-${{ github.event.pull_request.number }})
-
-            > This is a JavaScript-only preview using `expo publish`. No native code was rebuilt.
+            > ⚠️ JavaScript-only update using `eas update`. No native code rebuild.
