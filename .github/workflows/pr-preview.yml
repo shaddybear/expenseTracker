@@ -1,59 +1,41 @@
-name: Expo PR Preview
-
-on:
-  pull_request:
-    types: [opened, synchronize]
+name: Preview
+on: pull_request
 
 jobs:
   update:
+    name: EAS Update
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
 
     steps:
+      - name: Check for EXPO_TOKEN
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "❌ You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets."
+            exit 1
+          fi
+
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: npm
 
-      - name: Setup Expo + EAS
+      - name: Setup EAS
         uses: expo/expo-github-action@v8
         with:
-          expo-version: latest
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
         run: npm install
 
-      - name: Publish preview update with EAS
-        id: eas-update
-        run: |
-          BRANCH="${{ github.head_ref }}"
-          OUTPUT=$(eas update --branch $BRANCH --non-interactive --auto --json)
-          echo "$OUTPUT" > eas_output.json
-
-          PROJECT_ID=$(echo "$OUTPUT" | jq -r '.[0].projectId')
-          GROUP_ID=$(echo "$OUTPUT" | jq -r '.[0].group')
-
-          PREVIEW_URL="https://expo.dev/preview/update?projectId=$PROJECT_ID&group=$GROUP_ID"
-          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
-
-
-      - name: Comment on PR with Preview Link
-        uses: mshick/add-pr-comment@v2
+      - name: Create preview
+        uses: expo/expo-github-action/preview@v8
         with:
-          message: |
-            🚀 **EAS Update Preview is Ready!**
-
-            📲 Open the link in your browser:
-            🔗 [Preview Update Link](${{ steps.eas-update.outputs.preview_url }})
-
-            > ⚠️ JavaScript-only update using `eas update`. No native code rebuild.
+          command: eas update --auto
