@@ -1,0 +1,45 @@
+# .github/workflows/pr-preview.yml
+name: Expo PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Publish to Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Generate preview link
+        id: publish
+        run: |
+          CHANNEL="preview-pr-${{ github.event.pull_request.number }}"
+          expo publish --release-channel $CHANNEL --non-interactive --quiet
+          echo "exp://exp.host/@ritaban06/expensetracker?release-channel=$CHANNEL" >> link.txt
+
+      - name: Comment on PR with Preview Link
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            🚀 **Expo Preview Build is Ready!**
+
+            📲 Open the link below:
+
+            🔗 [`exp://exp.host/@ritaban06/expensetracker?release-channel=preview-pr-${{ github.event.pull_request.number }}`](exp://exp.host/@ritaban06/expensetracker?release-channel=preview-pr-${{ github.event.pull_request.number }})
+
+            > This is a JavaScript-only preview using `expo publish`. No native code was rebuilt.
