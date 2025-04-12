@@ -1,4 +1,3 @@
-# .github/workflows/pr-preview.yml
 name: Expo PR Preview
 
 on:
@@ -17,13 +16,19 @@ jobs:
         with:
           node-version: 18
 
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          expo-token: ${{ secrets.EXPO_TOKEN }}
+
       - name: Install dependencies
         run: npm install
 
       - name: Publish to Expo
-        uses: expo/expo-github-action@v8
-        with:
-          expo-token: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          CHANNEL="preview-pr-${{ github.event.pull_request.number }}"
+          expo publish --release-channel $CHANNEL --non-interactive --quiet
 
       - name: Generate preview link
         id: publish
