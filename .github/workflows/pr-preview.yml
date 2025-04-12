@@ -39,10 +39,13 @@ jobs:
           BRANCH="${{ github.head_ref }}"
           OUTPUT=$(eas update --branch $BRANCH --non-interactive --auto --json)
           echo "$OUTPUT" > eas_output.json
-          PROJECT_ID=$(echo "$OUTPUT" | jq -r '.projectId')
-          GROUP_ID=$(echo "$OUTPUT" | jq -r '.groups[0].id')
+
+          PROJECT_ID=$(echo "$OUTPUT" | jq -r '.[0].projectId')
+          GROUP_ID=$(echo "$OUTPUT" | jq -r '.[0].group')
+
           PREVIEW_URL="https://expo.dev/preview/update?projectId=$PROJECT_ID&group=$GROUP_ID"
           echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+
 
       - name: Comment on PR with Preview Link
         uses: mshick/add-pr-comment@v2
