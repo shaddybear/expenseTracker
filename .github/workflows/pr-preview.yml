@@ -16,11 +16,13 @@ jobs:
         with:
           node-version: 18
 
-      - name: Setup Expo
+      - name: Setup Expo and EAS CLI
         uses: expo/expo-github-action@v8
         with:
           expo-version: latest
-          expo-token: ${{ secrets.EXPO_TOKEN }}
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
 
       - name: Install dependencies
         run: npm install
@@ -30,12 +32,12 @@ jobs:
           CHANNEL="preview-pr-${{ github.event.pull_request.number }}"
           expo publish --release-channel $CHANNEL --non-interactive --quiet
 
-      - name: Generate preview link
-        id: publish
+      - name: Publish update with EAS
         run: |
-          CHANNEL="preview-pr-${{ github.event.pull_request.number }}"
-          expo publish --release-channel $CHANNEL --non-interactive --quiet
-          echo "exp://exp.host/@ritaban06/expensetracker?release-channel=$CHANNEL" >> link.txt
+            CHANNEL="preview-pr-${{ github.event.pull_request.number }}"
+            eas update --branch $CHANNEL --non-interactive
+            echo "https://expo.dev/updates/$CHANNEL" > link.txt
+
 
       - name: Comment on PR with Preview Link
         uses: mshick/add-pr-comment@v2
