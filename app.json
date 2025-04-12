@@ -1,9 +1,8 @@
 {
   "expo": {
     "name": "expenseTracker",
-    "slug": "expenseTracker",
+    "slug": "expensetracker",
     "version": "1.0.0",
-    "owner": "folks-of-devx",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -17,7 +16,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.folksofdevx.expenseTracker"
+      "package": "com.ritaban06.expenseTracker"
     },
     "web": {
       "bundler": "metro",
@@ -44,7 +43,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "1cc9263e-bff9-49d3-b18c-069c87b413af"
+        "projectId": "b2a3119f-3cfe-4bbe-a888-8c4f1d51a42d"
       }
     }
   }
