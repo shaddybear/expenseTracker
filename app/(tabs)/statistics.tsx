@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { colors, spacingX, spacingY } from '@/constants/theme'
 import { scale } from '@/utils/styling'
-import { collection, query, where, getDocs } from 'firebase/firestore'
+import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore'
 import { firestore } from '@/config/firebase'
 import { useAuth } from '@/contexts/authContext'
 import { LineChart, PieChart } from 'react-native-chart-kit'
@@ -61,6 +61,8 @@ const Statistics = () => {
     transactions.forEach(transaction => {
       const transactionDate = transaction.date instanceof Date 
         ? transaction.date 
+        : transaction.date instanceof Timestamp 
+        ? transaction.date.toDate() 
         : new Date(transaction.date)
       const month = months[transactionDate.getMonth()]
       monthlyTotals[month] = (monthlyTotals[month] || 0) + transaction.amount
