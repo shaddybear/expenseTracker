@@ -2,13 +2,19 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users can only read and write their own data
-    match /users/{userId} {
+    // Users can read and write their own data and all nested collections
+    match /users/{userId}/{document=**} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
     
-    // Expenses can only be read and written by the owner
-    match /expenses/{expenseId} {
+    // Transactions can only be read and written by the owner
+    match /transactions/{transactionId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Wallets can only be read and written by the owner
+    match /wallets/{walletId} {
       allow read, write: if request.auth != null && 
         request.auth.uid == resource.data.userId;
     }

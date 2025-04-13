@@ -76,12 +76,21 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) 
         }
     };
 
+    const signOut = async () => {
+        try {
+            await auth.signOut()
+        } catch (error) {
+            console.log('error signing out: ', error)
+        }
+    }
+
     const contextValue: AuthContextType ={
         user,
         setUser,
         login,
         register,
         updateUserData,
+        signOut,
     }
 
     return (

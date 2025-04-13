@@ -36,7 +36,7 @@ export type TypoProps = {
   color?: string;
   fontWeight?: TextStyle["fontWeight"];
   children: any | null;
-  style?: TextStyle;
+  style?: TextStyle | TextStyle[];
   textProps?: TextProps;
 };
 
@@ -113,10 +113,12 @@ export interface InputProps extends TextInputProps {
 }
 
 export interface CustomButtonProps extends TouchableOpacityProps {
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
   onPress?: () => void;
   loading?: boolean;
   children: React.ReactNode;
+  textStyle?: TextStyle | TextStyle[];
+  title?: string;
 }
 
 export type ImageUploadProps = {
@@ -153,6 +155,7 @@ export type AuthContextType = {
     name: string
   ) => Promise<{ success: boolean; msg?: string }>;
   updateUserData: (userId: string) => Promise<void>;
+  signOut: () => void;
 };
 
 export type ResponseType = {
@@ -164,7 +167,7 @@ export type ResponseType = {
 export type WalletType = {
   id?: string;
   name: string;
-  amount?: number;
+  balance: number;
   totalIncome?: number;
   totalExpenses?: number;
   image: any;
