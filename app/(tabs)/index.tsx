@@ -107,7 +107,8 @@ const Home = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Typo size={20} fontWeight="600">Recent Transactions</Typo>
-            <TouchableOpacity onPress={() => router.push('./transactions')}>              <Typo color={colors.primary}>See All</Typo>
+            <TouchableOpacity onPress={() => router.push('./transactions')}>
+              <Typo color={colors.primary}>See All</Typo>
             </TouchableOpacity>
           </View>
           {recentTransactions.map((transaction) => (
