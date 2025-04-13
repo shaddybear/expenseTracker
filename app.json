@@ -2,6 +2,7 @@
   "expo": {
     "name": "expenseTracker",
     "slug": "expensetracker",
+    "owner": "folks-of-devx",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,7 +17,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.ritaban06.expenseTracker"
+      "package": "com.folksofdevx.expensetracker"
     },
     "web": {
       "bundler": "metro",
@@ -43,14 +44,11 @@
         "origin": false
       },
       "eas": {
-        "projectId": "b2a3119f-3cfe-4bbe-a888-8c4f1d51a42d"
+        "projectId": "c2ed0d34-efd9-441d-b8a2-56364b8d8ae0"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/b2a3119f-3cfe-4bbe-a888-8c4f1d51a42d"
     }
   }
 }
