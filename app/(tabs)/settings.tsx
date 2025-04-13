@@ -1,9 +1,11 @@
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, View, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { colors, spacingX, spacingY } from '@/constants/theme'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import Typo from '@/components/Typo'
 import Button from '@/components/Button'
+import { auth, firestore } from '@/config/firebase'
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 
 const Settings = () => {
   const [settings, setSettings] = useState({
@@ -12,9 +14,28 @@ const Settings = () => {
     language: 'English',
   })
 
-  const handleSave = () => {
-    // TODO: Implement save settings to backend
-    console.log('Saving settings:', settings)
+  const [loading, setLoading] = useState(false)
+
+  const handleSave = async () => {
+    try {
+      setLoading(true)
+      const { currentUser } = auth
+      if (!currentUser) {
+        throw new Error('User not authenticated')
+      }
+
+      await setDoc(doc(firestore, 'users', currentUser.uid, 'settings', 'preferences'), {
+        ...settings,
+        updatedAt: serverTimestamp()
+      })
+
+      Alert.alert('Success', 'Settings saved successfully')
+    } catch (error) {
+      console.error('Error saving settings:', error)
+      Alert.alert('Error', 'Failed to save settings. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const SettingItem = ({
@@ -84,8 +105,13 @@ const Settings = () => {
           />
         </View>
 
-        <Button onPress={handleSave}
-          style={styles.saveButton}>Save Settings</Button>
+        <Button
+          onPress={handleSave}
+          style={styles.saveButton}
+          loading={loading}
+        >
+          Save Settings
+        </Button>
       </ScrollView>
     </ScreenWrapper>
   )
