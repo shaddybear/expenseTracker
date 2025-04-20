@@ -33,13 +33,16 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) 
 
     const login = async (email: string, password: string) =>{
         try {
-            await signInWithEmailAndPassword(auth, email, password)
-            return{success: true}
+            await signInWithEmailAndPassword(auth, email, password);
+            return{success: true};
         }catch (error: any){
-            let msg = error.message
-            return{success: false, msg}
+            let msg = error.message;
+            console.log("erroe message: ", msg);
+            if(msg.includes("(auth/invalid-credential)")) msg = "Wrong credentials";
+            if(msg.includes("(auth/invalid-email)")) msg = "Invaild email";
+            return{success: false, msg};
         }
-    }
+    };
     const register = async (email: string, password: string, name: string) =>{
         try {
             let respone = await createUserWithEmailAndPassword(auth, email, password)
@@ -108,3 +111,4 @@ export const useAuth = ():AuthContextType => {
     }
     return context
 }
+//hdbdahavaaajadaib alien langugae
