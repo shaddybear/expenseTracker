@@ -1,10 +1,12 @@
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { colors, spacingX, spacingY } from '@/constants/theme'
+import { colors, radius, spacingX, spacingY } from '@/constants/theme'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import Typo from '@/components/Typo'
 import { useAuth } from '@/contexts/authContext'
 import { useRouter } from 'expo-router'
+import { verticalScale } from '@/utils/styling'
+import { Header } from 'react-native/Libraries/NewAppScreen'
 
 const menuItems = [
   {
@@ -35,35 +37,11 @@ const Profile = () => {
 
   return (
     <ScreenWrapper>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.container}
-      >
-        <View style={styles.header}>
-          <Typo size={24} fontWeight="600">
-            Profile
-          </Typo>
-        </View>
-
-        <View style={styles.userInfo}>
-          <Typo size={18} fontWeight="600">
-            {user?.name || 'User'}
-          </Typo>
-          <Typo color={colors.neutral400}>{user?.email}</Typo>
-        </View>
-
-        <View style={styles.menuContainer}>
-          {menuItems.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.menuItem}
-              onPress={() => router.push(item.route as any)}
-            >
-              <Typo>{item.title}</Typo>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
+      {<View style={styles.container}>
+      <Header />
+      </View>
+    
+      }
     </ScreenWrapper>
   )
 }
@@ -72,25 +50,61 @@ export default Profile
 
 const styles = StyleSheet.create({
   container: {
-    padding: spacingX._20,
-    gap: spacingY._20,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flex: 1,
+    paddingHorizontal: spacingX._20,
   },
   userInfo: {
+    marginTop: verticalScale(30),
     alignItems: 'center',
-    gap: spacingY._5,
-    marginVertical: spacingY._10,
+    gap: spacingY._15,
   },
-  menuContainer: {
-    gap: spacingY._10,
+  avatar: {
+    alignSelf: 'center',
+    backgroundColor: colors.neutral300,
+    height: verticalScale(135),
+    width: verticalScale(135),
+    borderRadius: 200,
   },
-  menuItem: {
-    padding: spacingX._15,
-    backgroundColor: colors.neutral800,
-    borderRadius: 8,
-  },
+    editIcon: {
+      bottom: 5,
+      right: 8,
+      borderRadius: 50,
+      backgroundColor: colors.neutral100,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.25,
+      shadowRadius: 10,
+      elevation: 4,
+      padding: 5,
+    },
+  
+    nameContainer: {
+      gap: verticalScale(4),
+      alignItems: 'center',
+    },
+  
+    listIcon: {
+      height: verticalScale(44),
+      width: verticalScale(44),
+      backgroundColor: colors.neutral500,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: radius._15,
+      borderCurve: 'continuous',
+    },
+  
+    listItem: {
+      marginBottom: verticalScale(17),
+    },
+  
+    accountOptions: {
+      marginTop: spacingY._35,
+    },
+  
+    flexRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacingX._10,
+    }
+  
 })
