@@ -67,5 +67,3 @@ export const getYearsRange = (startYear: number, endYear: number): any => {
   // return result;
   return result.reverse();
 };
-
-// hey vroooo
